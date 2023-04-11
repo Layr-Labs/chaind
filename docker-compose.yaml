@@ -1,0 +1,7 @@
+
+services:
+  chaind:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/layr-labs/chaind/chaind:latest

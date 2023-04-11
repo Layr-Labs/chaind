@@ -171,18 +171,19 @@ func (s *Service) OnBlock(ctx context.Context, signedBlock *spec.VersionedSigned
 	if err := s.blocksSetter.SetBlock(ctx, dbBlock); err != nil {
 		return errors.Wrap(err, "failed to set block")
 	}
-	switch signedBlock.Version {
-	case spec.DataVersionPhase0:
-		return s.onBlockPhase0(ctx, signedBlock.Phase0, dbBlock)
-	case spec.DataVersionAltair:
-		return s.onBlockAltair(ctx, signedBlock.Altair, dbBlock)
-	case spec.DataVersionBellatrix:
-		return s.onBlockBellatrix(ctx, signedBlock.Bellatrix, dbBlock)
-	case spec.DataVersionCapella:
-		return s.onBlockCapella(ctx, signedBlock.Capella, dbBlock)
-	default:
-		return errors.New("unknown block version")
-	}
+	return nil
+	// switch signedBlock.Version {
+	// case spec.DataVersionPhase0:
+	// 	return s.onBlockPhase0(ctx, signedBlock.Phase0, dbBlock)
+	// case spec.DataVersionAltair:
+	// 	return s.onBlockAltair(ctx, signedBlock.Altair, dbBlock)
+	// case spec.DataVersionBellatrix:
+	// 	return s.onBlockBellatrix(ctx, signedBlock.Bellatrix, dbBlock)
+	// case spec.DataVersionCapella:
+	// 	return s.onBlockCapella(ctx, signedBlock.Capella, dbBlock)
+	// default:
+	// 	return errors.New("unknown block version")
+	// }
 }
 
 func (s *Service) onBlockPhase0(ctx context.Context, signedBlock *phase0.SignedBeaconBlock, dbBlock *chaindb.Block) error {
