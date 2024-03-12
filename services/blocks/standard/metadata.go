@@ -20,20 +20,20 @@ import (
 	"github.com/pkg/errors"
 )
 
-// metadata stored about this service.
-type metadata struct {
+// Metadata stores information about this service.
+type Metadata struct {
 	LatestSlot int64 `json:"latest_slot"`
 }
 
-// metadataKey is the key for the metadata.
-var metadataKey = "blocks.standard"
+// MetadataKey is the key for the metadata.
+const MetadataKey = "blocks.standard"
 
-// getMetadata gets metadata for this service.
-func (s *Service) getMetadata(ctx context.Context) (*metadata, error) {
-	md := &metadata{
+// GetMetadata gets metadata for this service.
+func (s *Service) GetMetadata(ctx context.Context) (*Metadata, error) {
+	md := &Metadata{
 		LatestSlot: -1,
 	}
-	mdJSON, err := s.chainDB.Metadata(ctx, metadataKey)
+	mdJSON, err := s.chainDB.Metadata(ctx, MetadataKey)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to fetch metadata")
 	}
@@ -46,14 +46,15 @@ func (s *Service) getMetadata(ctx context.Context) (*metadata, error) {
 	return md, nil
 }
 
-// setMetadata sets metadata for this service.
-func (s *Service) setMetadata(ctx context.Context, md *metadata) error {
+// SetMetadata sets metadata for this service.
+func (s *Service) SetMetadata(ctx context.Context, md *Metadata) error {
 	mdJSON, err := json.Marshal(md)
 	if err != nil {
 		return errors.Wrap(err, "failed to marshal metadata")
 	}
-	if err := s.chainDB.SetMetadata(ctx, metadataKey, mdJSON); err != nil {
+	if err := s.chainDB.SetMetadata(ctx, MetadataKey, mdJSON); err != nil {
 		return errors.Wrap(err, "failed to update metadata")
 	}
 	return nil
 }
+
